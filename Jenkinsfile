@@ -13,13 +13,18 @@ pipeline {
             }
         }
     
-    stage('Run Selenium Tests') {
-            steps {
-                // Exécution des tests avec Selenium
-                sh  'python3 -m robot tests/test_temp.robot'
-                stash name: 'results', includes: 'results/*'
-            }
-    }
+        stage('Run Selenium Tests') {
+                steps {
+                    // Exécution des tests avec Selenium
+                    sh  'python3 -m robot tests/test_temp.robot'
+                    stash name: 'results', includes: 'results/*'
+                }
+        }
     }
 
+    post {
+        always {
+            unstash 'results' //extract results
+        }
+    }
 }
